@@ -249,13 +249,16 @@
   <data name="IndividualDisk" xml:space="preserve">
     <value>個別磁碟</value>
   </data>
-  <data name="KeepAlwaysOnTop" xml:space="preserve">
-    <value>保持在最前面</value>
-  </data>
   <data name="DragHereToMove" xml:space="preserve">
-    <value>拖到這裡移動</value>
+    <value>拖拉這裡移動</value>
   </data>
   <data name="BackgroundColor" xml:space="preserve">
     <value>背景顏色</value>
+  </data>
+  <data name="ShowOnlyTheMostUtilizedProcessors" xml:space="preserve">
+    <value>僅顯示使用率最高的N個處理器</value>
+  </data>
+  <data name="UseDarkMode" xml:space="preserve">
+    <value>使用深色模式</value>
   </data>
 </root>

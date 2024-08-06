@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Management;
 using System.Reflection;
+using LibreHardwareMonitor.Hardware;
 
 namespace IconMeterWPF
 {
@@ -22,15 +23,60 @@ namespace IconMeterWPF
 		[DllImport("user32.dll")]
 		extern static bool DestroyIcon(IntPtr handle);
 
-        // private fields
-        Properties.Settings settings;
+		// private fields
+		Properties.Settings settings;
 		PerformanceCounter cpuCounter, memoryCounter, diskCounter;
+
+		/// <summary>
+		/// The last cpu usage
+		/// </summary>
 		float lastCpuUsage = 0;
+
+        /// <summary>
+        /// The computer hardware
+        /// </summary>
+        Computer computer = new Computer() { IsCpuEnabled = true , IsGpuEnabled = true };
+
+        /// <summary>
+        /// The cpu
+        /// </summary>
+        IHardware cpu;
+
+        /// <summary>
+        /// Gets or sets the cpu temperature sensor.
+        /// </summary>
+        /// <value>
+        /// The cpu temperature sensor.
+        /// </value>
+        public ISensor CpuTemperatureSensor { get; set; }
+
+        /// <summary>
+        /// The gpu
+        /// </summary>
+        IHardware gpu;
+
+        /// <summary>
+        /// Gets or sets the gpu load sensor.
+        /// </summary>
+        /// <value>
+        /// The gpu load sensor.
+        /// </value>
+        public ISensor GpuLoadSensor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the gpu temperature sensor.
+        /// </summary>
+        /// <value>
+        /// The gpu temperature sensor.
+        /// </value>
+        public ISensor GpuTemperatureSensor { get; set; }
+
 		float lastMemoryUsage = 0;
 		float lastDiskUsage = 0;
 		float _lastNetworkReceive = 0;
 		float _lastNetworkSend = 0;
 		float[] logicalProcessorUsage = null;
+		IEnumerable<(float usage, int index)> selectedLogicalProcessorUsage = null;
 		string _mainTooltip, _logicalProcessorsTooltip;
 		Icon _defaultTrayIcon, _mainTrayIcon, _logicalProcessorsTrayIcon;
 		IEnumerable<float> _lastNetworkSpeed;
@@ -108,10 +154,12 @@ namespace IconMeterWPF
             // create all performance counters with new settings
             InitializePerformanceCounters();
 		}
+
 		public void Pause()
 		{
 			this.timer.Stop();
 		}
+
 		public void Resume()
 		{
 			this.timer.Start();
@@ -167,9 +215,27 @@ namespace IconMeterWPF
 				cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
 			}
 
-			// memory PC
-			memoryCounter = new PerformanceCounter("Memory", "Available MBytes");
-				//"Memory", "% Committed Bytes In Use");
+			// Initial CPU
+			computer.Open();
+            cpu = computer.Hardware.Where(h => h.HardwareType == HardwareType.Cpu).FirstOrDefault();
+            if(cpu != null)
+			{
+                CpuTemperatureSensor = cpu.Sensors
+                .Where(s => s.SensorType == SensorType.Temperature && s.Value != null && s.Name == settings.CpuTemperatureKey).FirstOrDefault();
+            }
+
+			// Initial GPU
+			gpu = computer.Hardware.Where(h => h.HardwareType == HardwareType.GpuNvidia || h.HardwareType == HardwareType.GpuAmd || h.HardwareType == HardwareType.GpuIntel).FirstOrDefault();
+			if (gpu != null)
+			{
+                GpuLoadSensor = gpu.Sensors.Where(s => s.SensorType == SensorType.Load).FirstOrDefault();
+                GpuTemperatureSensor = gpu.Sensors
+                    .Where(s => s.SensorType == SensorType.Temperature && s.Value != null && s.Name == settings.GpuTemperatureKey).FirstOrDefault();
+            }			
+
+            // memory PC
+            memoryCounter = new PerformanceCounter("Memory", "Available MBytes");
+			//"Memory", "% Committed Bytes In Use");
 
 			diskCounter = new PerformanceCounter("PhysicalDisk", "% Idle Time", "_Total");
 
@@ -234,6 +300,12 @@ namespace IconMeterWPF
 			if (settings.ShowMemoryUsage) lastMemoryUsage = 100 - (memoryCounter.NextValue() / totalMemorySize) * 100;
 			if (settings.ShowDiskUsage) lastDiskUsage = 100 - diskCounter.NextValue();
 
+			// update cpu data
+			cpu.Update();
+
+			// update gpu data
+			gpu.Update();
+
 			// network 
 			//if (settings.ShowNetworkUsage)
 			{
@@ -263,6 +335,17 @@ namespace IconMeterWPF
 			{
 				for (int i = 0; i < logicalProcessorsCounter.Count; i++)
 					logicalProcessorUsage[i] = logicalProcessorsCounter[i].NextValue();
+
+
+				if (settings.ShowOnlyTheMostUtilizedProcessors &&
+					settings.NumberOfShownProcessors < logicalProcessorUsage.Count())
+				{
+					int n = settings.NumberOfShownProcessors;
+					selectedLogicalProcessorUsage = logicalProcessorUsage
+						.Select((usage, index) => (usage, index))
+						.OrderByDescending(t => t.usage)
+						.Take(n);
+				}
 			}
 		}
 		Icon BuildMainNotifyIcon()
@@ -315,11 +398,20 @@ namespace IconMeterWPF
 			Color color = settings.LogicalProcessorColor;
 			Brush brush = new SolidBrush(color);
 
+			IEnumerable<float> usages = logicalProcessorUsage;
+
+			// order and filter processor usages if only the most utilized processors will be shown
+			if (settings.ShowOnlyTheMostUtilizedProcessors && 
+				settings.NumberOfShownProcessors < usages.Count())
+			{
+				usages = selectedLogicalProcessorUsage.Select(x => x.usage);
+			}
+
 			// build the new icon from logical processor readings
 			Icon icon = IconBuilder.BuildIcon(
-				logicalProcessorUsage.Select(x => (x, brush)),
-				useVerticalBar:settings.UseVerticalBars,
-				label:"P"
+				usages.Select(x => (x, brush)),
+				useVerticalBar: settings.UseVerticalBars,
+				label: "P"
 				);
 
 			// release resource used by brushes
@@ -347,7 +439,12 @@ namespace IconMeterWPF
 			StringBuilder sb = new StringBuilder();
 
 			if (settings.ShowCpuUsage) sb.AppendLine($"{Properties.Resources.CPU} {Math.Round(lastCpuUsage)}%");
-			if (settings.ShowMemoryUsage) sb.AppendLine($"{Properties.Resources.Memory} {Math.Round(lastMemoryUsage)}%");
+			if (settings.ShowCpuTemperature && CpuTemperatureSensor != null) sb.AppendLine($"{Properties.Resources.CPUTemperature} {Math.Round(CpuTemperatureSensor.Value ?? 0)} ({Math.Round(CpuTemperatureSensor.Min ?? 0)}, {Math.Round(CpuTemperatureSensor.Max ?? 0)})");
+
+			if (settings.ShowGpuUsage && GpuLoadSensor != null) sb.AppendLine($"{Properties.Resources.GPU} {Math.Round(GpuLoadSensor.Value ?? 0)}%");
+            if (settings.ShowGpuTemperature && GpuTemperatureSensor != null) sb.AppendLine($"{Properties.Resources.GPUTemperature} {Math.Round(GpuTemperatureSensor.Value ?? 0)} ({Math.Round(GpuTemperatureSensor.Min ?? 0)}, {Math.Round(GpuTemperatureSensor.Max ?? 0)})");
+
+            if (settings.ShowMemoryUsage) sb.AppendLine($"{Properties.Resources.Memory} {Math.Round(lastMemoryUsage)}%");
 			if (settings.ShowDiskUsage) sb.AppendLine($"{Properties.Resources.Disk} {Math.Round(lastDiskUsage)}%");
 			if (settings.ShowNetworkUsage)
 			{
@@ -377,11 +474,20 @@ namespace IconMeterWPF
 		{
 			// build notify icon's tooltip text for logical processors
 
+			IEnumerable<(float usage, int index)> usages = logicalProcessorUsage.Select((usage, index) => (usage, index));
+
+
+			if (settings.ShowOnlyTheMostUtilizedProcessors &&
+				settings.NumberOfShownProcessors < logicalProcessorUsage.Count())
+			{
+				usages = selectedLogicalProcessorUsage;
+			}
+
 			// build the text
 			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < logicalProcessorUsage.Count(); i++)
+			foreach ((float usage, int index) in usages)
 			{
-				sb.AppendLine($"{Properties.Resources.CPU} {i + 1}: {Math.Round(logicalProcessorUsage[i])}%");
+				_ = sb.AppendLine($"{Properties.Resources.CPU} {index + 1}: {Math.Round(usage)}%");
 			}
 
 			// make sure the tooltip text has at most 128 characters

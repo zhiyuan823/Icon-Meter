@@ -249,13 +249,25 @@
   <data name="IndividualDisk" xml:space="preserve">
     <value>Individual Disk</value>
   </data>
-  <data name="KeepAlwaysOnTop" xml:space="preserve">
-    <value>Keep always on top</value>
-  </data>
   <data name="DragHereToMove" xml:space="preserve">
     <value>Drag here to move</value>
   </data>
   <data name="BackgroundColor" xml:space="preserve">
     <value>Background Color</value>
+  </data>
+  <data name="ShowOnlyTheMostUtilizedProcessors" xml:space="preserve">
+    <value>Show only the N most utilized processors</value>
+  </data>
+  <data name="UseDarkMode" xml:space="preserve">
+    <value>Use Dark Mode</value>
+  </data>
+  <data name="CPUTemperature" xml:space="preserve">
+    <value>CPU(℃)</value>
+  </data>
+  <data name="GPU" xml:space="preserve">
+    <value>GPU</value>
+  </data>
+  <data name="GPUTemperature" xml:space="preserve">
+    <value>GPU(℃)</value>
   </data>
 </root>

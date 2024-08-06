@@ -249,13 +249,16 @@
   <data name="IndividualDisk" xml:space="preserve">
     <value>個別のディスク</value>
   </data>
-  <data name="KeepAlwaysOnTop" xml:space="preserve">
-    <value>常にトップを維持</value>
-  </data>
   <data name="DragHereToMove" xml:space="preserve">
     <value>ここにドラッグして移動します</value>
   </data>
   <data name="BackgroundColor" xml:space="preserve">
     <value>背景色</value>
+  </data>
+  <data name="ShowOnlyTheMostUtilizedProcessors" xml:space="preserve">
+    <value>最も使用率の高いN個のプロセッサーのみを表示する</value>
+  </data>
+  <data name="UseDarkMode" xml:space="preserve">
+    <value>ダークモードを使用</value>
   </data>
 </root>

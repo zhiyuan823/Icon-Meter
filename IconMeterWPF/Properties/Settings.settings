@@ -56,5 +56,29 @@
     <Setting Name="TrayIconBackgroundColor" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">32, 32, 32</Value>
     </Setting>
+    <Setting Name="ShowOnlyTheMostUtilizedProcessors" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="NumberOfShownProcessors" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="UseDarkMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CpuTemperatureKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Core (Tctl/Tdie)</Value>
+    </Setting>
+    <Setting Name="GpuTemperatureKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">GPU Core</Value>
+    </Setting>
+    <Setting Name="ShowCpuTemperature" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ShowGpuTemperature" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ShowGpuUsage" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

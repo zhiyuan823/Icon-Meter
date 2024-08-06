@@ -19,7 +19,7 @@ namespace IconMeterWPF.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -142,6 +142,15 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CPU(℃).
+        /// </summary>
+        public static string CPUTemperature {
+            get {
+                return ResourceManager.GetString("CPUTemperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Days.
         /// </summary>
         public static string Days {
@@ -174,6 +183,24 @@ namespace IconMeterWPF.Properties {
         public static string DragHereToMove {
             get {
                 return ResourceManager.GetString("DragHereToMove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GPU.
+        /// </summary>
+        public static string GPU {
+            get {
+                return ResourceManager.GetString("GPU", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GPU(℃).
+        /// </summary>
+        public static string GPUTemperature {
+            get {
+                return ResourceManager.GetString("GPUTemperature", resourceCulture);
             }
         }
         
@@ -219,15 +246,6 @@ namespace IconMeterWPF.Properties {
         public static string InUse {
             get {
                 return ResourceManager.GetString("InUse", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Keep always on top.
-        /// </summary>
-        public static string KeepAlwaysOnTop {
-            get {
-                return ResourceManager.GetString("KeepAlwaysOnTop", resourceCulture);
             }
         }
         
@@ -403,6 +421,15 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show only the N most utilized processors.
+        /// </summary>
+        public static string ShowOnlyTheMostUtilizedProcessors {
+            get {
+                return ResourceManager.GetString("ShowOnlyTheMostUtilizedProcessors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to System.
         /// </summary>
         public static string System {
@@ -435,6 +462,15 @@ namespace IconMeterWPF.Properties {
         public static string Uptime {
             get {
                 return ResourceManager.GetString("Uptime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use Dark Mode.
+        /// </summary>
+        public static string UseDarkMode {
+            get {
+                return ResourceManager.GetString("UseDarkMode", resourceCulture);
             }
         }
         
