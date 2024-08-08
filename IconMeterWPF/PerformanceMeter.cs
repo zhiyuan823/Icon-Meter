@@ -71,6 +71,22 @@ namespace IconMeterWPF
         /// </value>
         public ISensor GpuTemperatureSensor { get; set; }
 
+        /// <summary>
+        /// Gets or sets the cpu temperature sensors.
+        /// </summary>
+        /// <value>
+        /// The cpu temperature sensors.
+        /// </value>
+        public List<String> CpuTemperatureSensors { get; set;}
+
+        /// <summary>
+        /// Gets or sets the gpu temperature sensors.
+        /// </summary>
+        /// <value>
+        /// The gpu temperature sensors.
+        /// </value>
+        public List<String> GpuTemperatureSensors { get; set;}
+
 		float lastMemoryUsage = 0;
 		float lastDiskUsage = 0;
 		float _lastNetworkReceive = 0;
@@ -220,6 +236,8 @@ namespace IconMeterWPF
             cpu = computer.Hardware.Where(h => h.HardwareType == HardwareType.Cpu).FirstOrDefault();
             if(cpu != null)
 			{
+				CpuTemperatureSensors = cpu.Sensors.Where(s => s.SensorType == SensorType.Temperature).Select(s => s.Name).ToList();
+
                 CpuTemperatureSensor = cpu.Sensors
                 .Where(s => s.SensorType == SensorType.Temperature && s.Value != null && s.Name == settings.CpuTemperatureKey).FirstOrDefault();
             }
@@ -228,6 +246,8 @@ namespace IconMeterWPF
 			gpu = computer.Hardware.Where(h => h.HardwareType == HardwareType.GpuNvidia || h.HardwareType == HardwareType.GpuAmd || h.HardwareType == HardwareType.GpuIntel).FirstOrDefault();
 			if (gpu != null)
 			{
+                GpuTemperatureSensors = gpu.Sensors.Where(s => s.SensorType == SensorType.Temperature).Select(s => s.Name).ToList();
+
                 GpuLoadSensor = gpu.Sensors.Where(s => s.SensorType == SensorType.Load).FirstOrDefault();
                 GpuTemperatureSensor = gpu.Sensors
                     .Where(s => s.SensorType == SensorType.Temperature && s.Value != null && s.Name == settings.GpuTemperatureKey).FirstOrDefault();

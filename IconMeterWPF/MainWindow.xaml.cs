@@ -202,9 +202,14 @@ namespace IconMeterWPF
 			IntPtr handle = source.Handle;
 			SetForegroundWindow(handle);
 		}
-	}
 
-	public class BoolToVisibility : IValueConverter
+        private void CheckBox_Checked()
+        {
+
+        }
+    }
+
+    public class BoolToVisibility : IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
