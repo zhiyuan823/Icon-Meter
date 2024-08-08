@@ -80,5 +80,8 @@
     <Setting Name="ShowGpuUsage" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="GpuColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Pink</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

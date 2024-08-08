@@ -334,5 +334,17 @@ namespace IconMeterWPF.Properties {
                 this["ShowGpuUsage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Pink")]
+        public global::System.Drawing.Color GpuColor {
+            get {
+                return ((global::System.Drawing.Color)(this["GpuColor"]));
+            }
+            set {
+                this["GpuColor"] = value;
+            }
+        }
     }
 }

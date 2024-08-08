@@ -376,7 +376,10 @@ namespace IconMeterWPF
 			if (settings.ShowCpuUsage)
 				list.Add((lastCpuUsage, new SolidBrush(settings.CpuColor)));
 
-			if (settings.ShowMemoryUsage)
+            if (settings.ShowGpuUsage && GpuLoadSensor != null)
+                list.Add((GpuLoadSensor.Value ?? 0, new SolidBrush(settings.GpuColor)));
+
+            if (settings.ShowMemoryUsage)
 				list.Add((lastMemoryUsage, new SolidBrush(settings.MemoryColor)));
 
 			if (settings.ShowDiskUsage)

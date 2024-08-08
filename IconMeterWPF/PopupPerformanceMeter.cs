@@ -706,7 +706,7 @@ namespace IconMeterWPF
 
 			// build the new icon from logical processor readings
 			var list = AllDiskPerformance.Select(p => ((float)p.ActiveTime, brush));
-			Icon icon = IconBuilder.BuildIcon(list, useVerticalBar: settings.UseVerticalBars, label: "D");
+			Icon icon = IconBuilder.BuildIcon(list, useVerticalBar: settings.UseVerticalBars, label: "D", drawShadow:false);
 
 			// release resource used by brushes
 			brush.Dispose();

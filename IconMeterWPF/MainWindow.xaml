@@ -68,7 +68,7 @@
             </Style>
 
             <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type Control}}">
-                <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+                <Setter Property="HorizontalAlignment" Value="Right"></Setter>
                 <Setter Property="VerticalAlignment" Value="Center"></Setter>
             </Style>
 
@@ -82,7 +82,7 @@
             </Style>
 
             <Style TargetType="xctk:ColorPicker" BasedOn="{StaticResource {x:Type Control}}">
-                <Setter Property="MaxWidth" Value="80"></Setter>
+                <!--<Setter Property="MaxWidth" Value="80"></Setter>-->
             </Style>
 
             <Style TargetType="Button" BasedOn="{StaticResource {x:Type Control}}">
@@ -108,7 +108,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
@@ -122,48 +121,48 @@
         </Grid.ColumnDefinitions>
         <CheckBox 
                   Content="{x:Static properties:Resources.CPU}"
-                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowCpuUsage}" />
+                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowCpuUsage}"  />
         <CheckBox  Grid.Row="4" 
                   Content="{x:Static properties:Resources.Memory}"
-                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowMemoryUsage}" />
+                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowMemoryUsage}"  />
         <CheckBox  Grid.Row="5" 
                   Content="{x:Static properties:Resources.Disk}"
-                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowDiskUsage}"/>
+                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowDiskUsage}" />
         <xctk:ColorPicker x:Name="ButtonColorCPU" Grid.Column="2"   
-                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=CpuColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
+                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=CpuColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"  />
         <xctk:ColorPicker x:Name="ButtonColorMemory" Grid.Column="2" Grid.Row="4"  
-                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=MemoryColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
+                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=MemoryColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"  />
         <xctk:ColorPicker x:Name="ButtonColorDisk" Grid.Column="2" Grid.Row="5"  
-                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=DiskColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
+                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=DiskColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"  />
 
         <Label Grid.Column="1" Grid.Row="6"  
-               Content="{x:Static properties:Resources.Receive}" />
+               Content="{x:Static properties:Resources.Receive}"  />
         <Label Grid.Column="2" Grid.Row="6" 
-               Content="{x:Static properties:Resources.Send}"  />
+               Content="{x:Static properties:Resources.Send}"   />
 
         <CheckBox  Grid.Row="7"
                   Content="{x:Static properties:Resources.Network}"
-                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowNetworkUsage}"  />
+                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowNetworkUsage}"   />
         <xctk:ColorPicker x:Name="ButtonColorSend" Grid.Column="2" Grid.Row="7"   
-                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=NetworkSendColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
+                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=NetworkSendColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"  />
         <xctk:ColorPicker x:Name="ButtonColorReceive" Grid.Column="1" Grid.Row="7" 
-                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=NetworkReceiveColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
+                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=NetworkReceiveColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}" />
 
-        <Line Grid.Row="8" Style="{StaticResource horizontalLineStyle}"  Height="2" Grid.ColumnSpan="3"/>
+        <Line Grid.Row="8" Style="{StaticResource horizontalLineStyle}"  Height="2" Grid.ColumnSpan="4"/>
         <CheckBox x:Name="CheckBoxLogicalProcessors"  Grid.Row="9"
                   Content="{x:Static properties:Resources.LogicalProcessors}"
-                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowLogicalProcessorsUsage}"/>
+                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowLogicalProcessorsUsage}" />
         <xctk:ColorPicker x:Name="ButtonColorLogicalProcessor" Grid.Column="2" Grid.Row="9" 
-                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=LogicalProcessorColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
-        <CheckBox  Grid.Row="10" Grid.ColumnSpan="2"
+                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=LogicalProcessorColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"  />
+        <CheckBox  Grid.Row="10" 
                   Content="{x:Static properties:Resources.ShowOnlyTheMostUtilizedProcessors}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowOnlyTheMostUtilizedProcessors}" 
-                  IsEnabled="{Binding ElementName=CheckBoxLogicalProcessors, Path=IsChecked}"
+                  IsEnabled="{Binding ElementName=CheckBoxLogicalProcessors, Path=IsChecked}" 
                   />
 
         <ComboBox Name="cmbNumberOfProcessors"  Grid.Row="10" Grid.Column="2"
                   SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=NumberOfShownProcessors, Mode=TwoWay}"
-                  IsEnabled="{Binding ElementName=CheckBoxLogicalProcessors, Path=IsChecked}"
+                  IsEnabled="{Binding ElementName=CheckBoxLogicalProcessors, Path=IsChecked}" 
                   >
             <ComboBox.ItemsSource>
                 <x:Array Type="{x:Type sys:Int32}">
@@ -175,47 +174,45 @@
             </ComboBox.ItemsSource>
         </ComboBox>
 
-        <CheckBox  Grid.Row="11" Grid.ColumnSpan="2"
+        <CheckBox  Grid.Row="11"
                   Content="{x:Static properties:Resources.IndividualDisk}"
-                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowIndividualDiskUsage}"/>
+                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowIndividualDiskUsage}" />
         <xctk:ColorPicker x:Name="ButtonColorDiskActiveTime" Grid.Column="2" Grid.Row="11"  
-                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=IndividualDiskColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
+                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=IndividualDiskColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"  />
 
 
-        <Line Grid.Row="13" Style="{StaticResource horizontalLineStyle}"  Height="1" Grid.ColumnSpan="3"/>
+        <Line Grid.Row="13" Style="{StaticResource horizontalLineStyle}"  Height="1" Grid.ColumnSpan="4"/>
         <Label Grid.Column="0" Grid.Row="14"  
-               Content="{x:Static properties:Resources.BackgroundColor}"/>
+               Content="{x:Static properties:Resources.BackgroundColor}" />
         <xctk:ColorPicker x:Name="ButtonColorTrayIconBackground" Grid.Column="2"  Grid.Row="14" 
-                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=TrayIconBackgroundColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
+                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=TrayIconBackgroundColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"  />
         <CheckBox  Grid.Row="15"
                   Content="{x:Static properties:Resources.UseVerticalBar}"
-                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=UseVerticalBars}" />
+                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=UseVerticalBars}"  />
         <CheckBox  Grid.Row="16"
                   Content="{x:Static properties:Resources.RunAtStartup}"
-                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=RunAtStartup}" />
-
-        <Line Grid.Row="17" Style="{StaticResource horizontalLineStyle}"  Height="2" Grid.ColumnSpan="3"/>
-        <CheckBox  Grid.Row="18"
+                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=RunAtStartup}"  />
+        <CheckBox  Grid.Row="17"
                   Content="{x:Static properties:Resources.UseDarkMode}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=UseDarkMode}" />
 
-        <Line Grid.Row="19" Style="{StaticResource horizontalLineStyle}"  Height="1" Grid.ColumnSpan="3"/>
-        <Label Grid.Column="0" Grid.Row="20"  
+        <Line Grid.Row="18" Style="{StaticResource horizontalLineStyle}"  Height="1" Grid.ColumnSpan="4"/>
+        <Label Grid.Column="0" Grid.Row="19"  
                Content="{x:Static properties:Resources.Language}" />
-        <ComboBox Name="cmbLanguage"  Grid.Row="20" Grid.Column="2"
+        <ComboBox Name="cmbLanguage"  Grid.Row="19" Grid.Column="2"
                   SelectedValue="{Binding  Source={x:Static properties:Settings.Default}, Path=Language}"
                   SelectedValuePath="Key"
                   DisplayMemberPath="Value"
                   />
 
-        <Line Grid.Row="21" Style="{StaticResource horizontalLineStyle}"  Height="2" Grid.ColumnSpan="3"/>
-        <Button x:Name="ButtonOK" Grid.Column="1" MinHeight="24" Margin="4,4,4,4" Grid.Row="22" Click="ButtonOK_Click"
+        <Line Grid.Row="20" Style="{StaticResource horizontalLineStyle}"  Height="2" Grid.ColumnSpan="4"/>
+        <Button x:Name="ButtonOK" Grid.Column="1" MinHeight="24"  Grid.Row="21" Click="ButtonOK_Click"
                 Content="{x:Static properties:Resources.OK}"/>
-        <Button x:Name="ButtonCancel" Grid.Column="2" MinHeight="24"  Grid.Row="22" Click="ButtonCancel_Click"
-                Content="{x:Static properties:Resources.Cancel}"/>
+        <Button x:Name="ButtonCancel" Grid.Column="2" MinHeight="24"  Grid.Row="21" Click="ButtonCancel_Click"
+                Content="{x:Static properties:Resources.Cancel}"  />
 
 
-        <Popup x:Name="popup" AllowsTransparency="True" StaysOpen="False" Grid.RowSpan="8" Margin="0,0,0,30">
+        <Popup x:Name="popup" AllowsTransparency="True" StaysOpen="False" Grid.RowSpan="7">
             <local:PopupWindow/>
         </Popup>
 
@@ -224,7 +221,7 @@
                         LeftClickCommand="{ Binding ShowPopup, Mode=OneWay}"
                         DoubleClickCommand="{Binding StartTaskManager, Mode=OneWay}"  
                         ContextMenu="{DynamicResource SharedContextMenu}" 
-                        TrayLeftMouseDown="MainTaskbarIcon_TrayLeftMouseDown" Grid.RowSpan="8" Margin="0,0,0,30" d:IsHidden="True"/>
+                        TrayLeftMouseDown="MainTaskbarIcon_TrayLeftMouseDown" Grid.RowSpan="7" d:IsHidden="True"/>
 
         <tb:TaskbarIcon x:Name="LogicalProcessorsTaskbarIcon" 
                         ToolTipText="{Binding Meter.LogicalProcessorsTooltip}" 
@@ -232,7 +229,7 @@
                         DoubleClickCommand="{Binding StartTaskManager, Mode=OneWay}"  
                         ContextMenu="{DynamicResource SharedContextMenu}" 
                         Visibility="{Binding Source={x:Static properties:Settings.Default}, Path=ShowLogicalProcessorsUsage, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" 
-                        TrayLeftMouseDown="LogicalProcessorsTaskbarIcon_TrayLeftMouseDown" Grid.RowSpan="8" Margin="0,0,0,30"/>
+                        TrayLeftMouseDown="LogicalProcessorsTaskbarIcon_TrayLeftMouseDown" Grid.RowSpan="7"/>
 
         <tb:TaskbarIcon x:Name="IndividualDiskTaskbarIcon"
                         ToolTipText="{Binding PopupMeter.DiskActiveTimeTooltip}" 
@@ -240,35 +237,27 @@
                         DoubleClickCommand="{Binding StartTaskManager, Mode=OneWay}"  
                         ContextMenu="{DynamicResource SharedContextMenu}" 
                         Visibility="{Binding Source={x:Static properties:Settings.Default}, Path=ShowIndividualDiskUsage, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" 
-                        TrayLeftMouseDown="LogicalProcessorsTaskbarIcon_TrayLeftMouseDown" Grid.RowSpan="8" Margin="0,0,0,30"/>
-        <CheckBox x:Name="checkBoxAllowCPUTemperature" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowCpuTemperature}" Content="{x:Static properties:Resources.CPUTemperature}"  Grid.Row="1"    RenderTransformOrigin="0.5,0.5">
+                        TrayLeftMouseDown="LogicalProcessorsTaskbarIcon_TrayLeftMouseDown" Grid.RowSpan="7"/>
+        <CheckBox x:Name="checkBoxAllowCPUTemperature" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowCpuTemperature}" Content="{x:Static properties:Resources.CPUTemperature}"  Grid.Row="1"    RenderTransformOrigin="0.5,0.5" >
         </CheckBox>
         <ComboBox x:Name="comboxCPUTemperatureSource"  Grid.Row="1" Grid.Column="2" 
                   SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=CpuTemperatureKey, Mode=TwoWay}"
-                  IsEnabled="{Binding ElementName=checkBoxAllowCPUTemperature, Path=IsChecked}" HorizontalAlignment="Center" Width="80"
+                  IsEnabled="{Binding ElementName=checkBoxAllowCPUTemperature, Path=IsChecked}"
+                  ItemsSource="{Binding Meter.CpuTemperatureSensors}" 
                   />
-        <CheckBox 
-            Content="{x:Static properties:Resources.CPU}"
-            IsChecked="{Binding ShowCpuUsage, Source={x:Static properties:Settings.Default}}"  d:IsHidden="True"/>
-        <xctk:ColorPicker x:Name="BittpmColorGUP" Grid.Column="2"  
-            SelectedColor="{Binding CpuColor, Converter={StaticResource DrawingColorToWindowsMediaColor}, Source={x:Static properties:Settings.Default}}" Height="22"/>
+        <xctk:ColorPicker x:Name="BittpmColorCUP" Grid.Column="2"  
+            SelectedColor="{Binding CpuColor, Converter={StaticResource DrawingColorToWindowsMediaColor}, Source={x:Static properties:Settings.Default}}"   />
         <CheckBox
             Content="GPU"
-            IsChecked="{Binding ShowCpuUsage, Source={x:Static properties:Settings.Default}}"  Grid.Row="2"/>
-        <xctk:ColorPicker x:Name="BittpmColorGUP1" Grid.Column="2" 
-            SelectedColor="{Binding CpuColor, Converter={StaticResource DrawingColorToWindowsMediaColor}, Source={x:Static properties:Settings.Default}}" Height="22" Grid.Row="2"/>
-        <CheckBox x:Name="checkBoxAllowGPUTemperature" IsChecked="{Binding ShowCpuTemperature, Source={x:Static properties:Settings.Default}}" Content="{x:Static properties:Resources.GPUTemperature}"  Grid.Row="3"   />
+            IsChecked="{Binding ShowCpuUsage, Source={x:Static properties:Settings.Default}}"  Grid.Row="2" />
+        <xctk:ColorPicker x:Name="BittpmColorGUP" Grid.Column="2" 
+            SelectedColor="{Binding GpuColor, Converter={StaticResource DrawingColorToWindowsMediaColor}, Source={x:Static properties:Settings.Default}}"  Grid.Row="2"  />
+        <CheckBox x:Name="checkBoxAllowGPUTemperature" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowGpuTemperature, Mode=TwoWay}" Content="{x:Static properties:Resources.GPUTemperature}"  Grid.Row="3"    />
         <ComboBox x:Name="comboxGPUTemperatureSource" Grid.Row="3" Grid.Column="2"
                   SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=GpuTemperatureKey, Mode=TwoWay}"
-                  ItemsSource="{Binding Source=Meter.CpuTemperatureSensors}"
-                  IsEnabled="{Binding ElementName=checkBoxAllowGPUTemperature, Path=IsChecked}" HorizontalAlignment="Center" Width="80"
-                  >
-
-        </ComboBox>
-        <Label Grid.Row="3"  
-            Content="Sensor:" Height="26" Width="80" Grid.Column="1" />
-        <Label Grid.Row="1"  
-            Content="Sensor:" Height="26" Width="80" Grid.Column="1" />
+                  ItemsSource="{Binding Meter.GpuTemperatureSensors}"
+                  IsEnabled="{Binding ElementName=checkBoxAllowGPUTemperature, Path=IsChecked}"
+                  />
 
     </Grid>
 </Window>
