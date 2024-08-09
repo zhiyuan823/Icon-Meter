@@ -38,12 +38,12 @@ namespace IconMeterWPF
 			// clear background and draw bounding box
 			Color bgColor = Properties.Settings.Default.TrayIconBackgroundColor;
 			g.Clear(bgColor);
-			int t = iconSize - 1;
-			Pen linePen = Pens.DarkGray;
-			g.DrawLine(linePen, 0, 0, 0, t);
-			g.DrawLine(linePen, 0, t, t, t);
-			g.DrawLine(linePen, t, t, t, 0);
-			g.DrawLine(linePen, t, 0, 0, 0);
+			int t = iconSize;
+			//Pen linePen = Pens.DarkGray;
+			//g.DrawLine(linePen, 0, 0, 0, t);
+			//g.DrawLine(linePen, 0, t, t, t);
+			//g.DrawLine(linePen, t, t, t, 0);
+			//g.DrawLine(linePen, t, 0, 0, 0);
 
 			// draw label if it is provided
 			if (string.IsNullOrWhiteSpace(label) == false)
@@ -62,14 +62,15 @@ namespace IconMeterWPF
 					else
 					{
 						SizeF labelSize = g.MeasureString(label, drawFont);
-						g.DrawString(label, drawFont, drawBrush, iconSize - labelSize.Width - 1, iconSize - labelSize.Height);
+						g.DrawString(label, drawFont, drawBrush, iconSize - labelSize.Width, iconSize - labelSize.Height);
 					}
 				}
 			}
 
 			// compute bar height
 			int nReadings = list.Count();
-			float barHeight = iconSize / nReadings;
+			float barHeight = (float)iconSize / nReadings;
+			float rest = iconSize;
 
 			// render all bars
 			using (Pen shadowPen = new Pen(Color.FromArgb(128, Color.Black)))
@@ -79,11 +80,12 @@ namespace IconMeterWPF
 					float left = 0;
 					foreach (var (value, brush) in list)
 					{
+						// height is percent radio factor
 						float height = value * iconSize / 100.0f;
 						g.FillRectangle(brush, left, iconSize - height, barHeight, height);
 						left += barHeight;
 						if (drawShadow)
-							g.DrawLine(shadowPen, left - 1, iconSize - height + 0.5f, left - 1, iconSize);
+							g.DrawLine(shadowPen, left, iconSize - height, left, iconSize);
 					}
 				}
 				else // use horizontal bars
@@ -95,7 +97,7 @@ namespace IconMeterWPF
 						g.FillRectangle(brush, 0, top, height, barHeight);
 						top += barHeight;
 						if (drawShadow)
-							g.DrawLine(shadowPen, 0, top - 1, height - 0.5f, top - 1);
+							g.DrawLine(shadowPen, 0, top, height, top);
 					}
 				}
 			}

@@ -396,8 +396,8 @@ namespace IconMeterWPF
 				float send = (_lastNetworkSend / maxNetword) * 100;
 				float receive = (_lastNetworkReceive / maxNetword) * 100;
 
-				list.Add((send, new SolidBrush(settings.NetworkReceiveColor)));
-				list.Add((receive, new SolidBrush(settings.NetworkSendColor)));
+                list.Add((receive, new SolidBrush(settings.NetworkSendColor)));
+                list.Add((send, new SolidBrush(settings.NetworkReceiveColor)));
 			}
 
 			// return default icon if no items is selected
