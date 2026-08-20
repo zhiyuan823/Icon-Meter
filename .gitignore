@@ -5,7 +5,7 @@
 /IconMeter/obj
 /IconMeter/bin
 /.vs
-
+/publish
 /IconMeter/publish
 /IconMeterSetup/Release
 /IconMeterSetup64/Release
@@ -20,3 +20,6 @@
 /IconMeterWixSetup/obj
 /IconMeterWixSetup/bin/Debug
 /UpgradeLog2.htm
+IconMeterWPF/publish/
+IconMeterWPF/.vs/IconMeterWPF.csproj.*.json
+IconMeterWPF/IconMeterWPF_TemporaryKey.pfx
