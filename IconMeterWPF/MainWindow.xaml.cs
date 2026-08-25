@@ -20,6 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Xceed.Wpf.Toolkit;
+using log4net;
 
 namespace IconMeterWPF
 {
@@ -28,6 +29,7 @@ namespace IconMeterWPF
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private static readonly ILog log = LogManager.GetLogger(typeof(MainWindow));
 		[DllImport("user32.dll")]
 		internal static extern bool SetForegroundWindow(IntPtr hWnd);
 
@@ -48,6 +50,8 @@ namespace IconMeterWPF
 		// constructor
 		public MainWindow()
 		{
+			log.Info("MainWindow constructor called");
+			
 			InitializeComponent();
 
 			// add reference to MainViewModel

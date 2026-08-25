@@ -12,11 +12,14 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using log4net;
 
 namespace IconMeterWPF
 {
 	class MainViewModel : INotifyPropertyChanged
 	{
+		private static readonly ILog log = LogManager.GetLogger(typeof(MainViewModel));
+
 		// private fields
 		private PerformanceMeter _meter;
 		private PopupPerformanceMeter _popupMeter;
@@ -31,6 +34,8 @@ namespace IconMeterWPF
 		// constructors
 		public MainViewModel()
 		{
+			log.Info("MainViewModel constructor called");
+			
 			// initial all public ICommand objects
 			InitCommands();
 
@@ -49,6 +54,8 @@ namespace IconMeterWPF
 
 		private void _StartTaskManager(object obj = null)
 		{
+			log.Info("Task Manager started via StartTaskManager command");
+			
 			// start Task Manager
 			Process p = new Process();
 			p.StartInfo.FileName = "taskmgr";
@@ -57,6 +64,8 @@ namespace IconMeterWPF
 
 		private void _ShowPopup(object obj = null)
 		{
+			log.Info("Popup window shown via ShowPopup command");
+			
 			// show popup window
 			var w = this.MainWindow as MainWindow;
 			w?.ShowPopup();

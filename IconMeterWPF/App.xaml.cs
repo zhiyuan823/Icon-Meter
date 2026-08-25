@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using log4net;
 
 namespace IconMeterWPF
 {
@@ -17,6 +18,9 @@ namespace IconMeterWPF
 	{
 		// Mutex object for ensuring only single instance of application is allowed
 		private Mutex myMutex;
+		
+		// Log4Net logger
+		private static readonly ILog log = LogManager.GetLogger(typeof(App));
 
 		private ColorTheme colorTheme = ColorTheme.Light;
 
@@ -38,8 +42,13 @@ namespace IconMeterWPF
 			}
 		}
 
-private void Application_Startup(object sender, StartupEventArgs e)
+		private void Application_Startup(object sender, StartupEventArgs e)
 		{
+			// Initialize log4net
+			log4net.Config.XmlConfigurator.Configure();
+
+			log.Info("Application starting up");
+
 			// wait the previous instance to close when it is restarting
 			if (IconMeterWPF.Properties.Settings.Default.IsRestarting)
 			{
@@ -94,6 +103,8 @@ private void Application_Startup(object sender, StartupEventArgs e)
 
 		private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
 		{
+			log.Info("Display settings changed");
+
 			// fix a bug that tray icons always become visible
 			// after the screen resolution or system UI scale is changed,
 			// correct the icon visibility by updating the corresponding property values.
@@ -116,8 +127,10 @@ private void Application_Startup(object sender, StartupEventArgs e)
 			});
 		}
 
-private void Application_Exit(object sender, ExitEventArgs e)
+		private void Application_Exit(object sender, ExitEventArgs e)
 		{
+			log.Info("Application exiting");
+			
 			// detach static event handler when application is disposed,
 			// otherwise memory leaks will result.
 			SystemEvents.DisplaySettingsChanged -= SystemEvents_DisplaySettingsChanged;

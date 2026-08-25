@@ -205,7 +205,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="IconMeterWPF_TemporaryKey.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -214,6 +213,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Properties\log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon.ico" />
@@ -260,6 +262,27 @@
     <PackageReference Include="LibreHardwareMonitorLib">
       <Version>0.9.3</Version>
     </PackageReference>
+    <PackageReference Include="log4net">
+      <Version>2.0.15</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- NOTE: This AfterBuild target must come AFTER the Microsoft.CSharp.targets import,
+       otherwise it is overridden by the built-in empty AfterBuild target and never runs. -->
+  <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release' ">
+    <!-- Create a zip file of the release output into the repository root -->
+    <PropertyGroup>
+      <ReleasePath>$(MSBuildProjectDirectory)\bin\$(Configuration)</ReleasePath>
+      <ZipFileName>IconMeter-$(Configuration).zip</ZipFileName>
+      <ZipFilePath>$(MSBuildProjectDirectory)\..\$(ZipFileName)</ZipFilePath>
+    </PropertyGroup>
+
+    <Message Text="AfterBuild: Packaging $(ReleasePath) -> $(ZipFilePath)" Importance="high" />
+
+    <!-- Remove existing zip file if it exists -->
+    <Delete Files="$(ZipFilePath)" Condition="Exists('$(ZipFilePath)')" />
+
+    <!-- Create zip from the release output -->
+    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;try { Add-Type -AssemblyName System.IO.Compression.FileSystem; [System.IO.Compression.ZipFile]::CreateFromDirectory('$(ReleasePath)', '$(ZipFilePath)'); Write-Host 'Created: $(ZipFilePath)' -ForegroundColor Green } catch { Write-Error $_.Exception.Message; exit 1 }&quot;" />
+  </Target>
 </Project>
