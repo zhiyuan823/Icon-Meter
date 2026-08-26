@@ -159,6 +159,15 @@
   <data name="RunAtStartup" xml:space="preserve">
     <value>在系统启动时运行</value>
   </data>
+  <data name="RunAsAdmin" xml:space="preserve">
+    <value>以管理员方式运行</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>Icon Meter</value>
+  </data>
+  <data name="RunAsAdminFailed" xml:space="preserve">
+    <value>无法以管理员权限注册启动任务。请在接受用户账户控制提示后重试，或以管理员身份运行 Icon Meter 来启用此选项。</value>
+  </data>
   <data name="Send" xml:space="preserve">
     <value>发送:</value>
   </data>

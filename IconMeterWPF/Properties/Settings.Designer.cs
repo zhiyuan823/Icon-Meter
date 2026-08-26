@@ -109,6 +109,18 @@ namespace IconMeterWPF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RunAsAdmin {
+            get {
+                return ((bool)(this["RunAsAdmin"]));
+            }
+            set {
+                this["RunAsAdmin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("OrangeRed")]
         public global::System.Drawing.Color CpuColor {
             get {

@@ -159,6 +159,15 @@
   <data name="RunAtStartup" xml:space="preserve">
     <value>起動時に実行</value>
   </data>
+  <data name="RunAsAdmin" xml:space="preserve">
+    <value>管理者として実行</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>Icon Meter</value>
+  </data>
+  <data name="RunAsAdminFailed" xml:space="preserve">
+    <value>管理者権限でのスタートアップ タスクを登録できませんでした。ユーザー アカウント制御のプロンプトを受け入れるか、Icon Meter を管理者として実行してください。</value>
+  </data>
   <data name="Send" xml:space="preserve">
     <value>送信:</value>
   </data>

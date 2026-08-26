@@ -238,8 +238,21 @@ namespace IconMeterWPF
 			{
 				CpuTemperatureSensors = cpu.Sensors.Where(s => s.SensorType == SensorType.Temperature).Select(s => s.Name).ToList();
 
-                CpuTemperatureSensor = cpu.Sensors
-                .Where(s => s.SensorType == SensorType.Temperature && s.Value != null && s.Name == settings.CpuTemperatureKey).FirstOrDefault();
+				// reading CPU temperature requires administrator privileges (MSR registers);
+				// without elevation leave the sensor unset so no temperature is displayed
+				if (App.IsAdministrator())
+				{
+					// select the temperature sensor automatically, preferring the whole CPU package temperature
+					CpuTemperatureSensor = SelectCpuTemperatureSensor(cpu);
+
+					// keep the settings key in sync so the settings UI shows the sensor actually in use
+					if (CpuTemperatureSensor != null && settings.CpuTemperatureKey != CpuTemperatureSensor.Name)
+						settings.CpuTemperatureKey = CpuTemperatureSensor.Name;
+				}
+				else
+				{
+					CpuTemperatureSensor = null;
+				}
             }
 
 			// Initial GPU
@@ -249,8 +262,17 @@ namespace IconMeterWPF
                 GpuTemperatureSensors = gpu.Sensors.Where(s => s.SensorType == SensorType.Temperature).Select(s => s.Name).ToList();
 
                 GpuLoadSensor = gpu.Sensors.Where(s => s.SensorType == SensorType.Load).FirstOrDefault();
-                GpuTemperatureSensor = gpu.Sensors
-                    .Where(s => s.SensorType == SensorType.Temperature && s.Value != null && s.Name == settings.GpuTemperatureKey).FirstOrDefault();
+
+                // GPU temperature also requires administrator privileges; without elevation leave the sensor unset
+                if (App.IsAdministrator())
+                {
+                    GpuTemperatureSensor = gpu.Sensors
+                        .Where(s => s.SensorType == SensorType.Temperature && s.Value != null && s.Name == settings.GpuTemperatureKey).FirstOrDefault();
+                }
+                else
+                {
+                    GpuTemperatureSensor = null;
+                }
             }			
 
             // memory PC
@@ -289,6 +311,48 @@ namespace IconMeterWPF
 
 			timer.Start();
 		}
+
+		/// <summary>
+		/// Selects the CPU temperature sensor, preferring the whole CPU package temperature
+		/// and falling back gracefully when sensor names differ between CPU models.
+		/// </summary>
+		/// <param name="cpu">The cpu hardware.</param>
+		/// <returns>The selected temperature sensor, or null if none is available.</returns>
+		ISensor SelectCpuTemperatureSensor(IHardware cpu)
+		{
+			var tempSensors = cpu.Sensors.Where(s => s.SensorType == SensorType.Temperature).ToList();
+			if (tempSensors.Count == 0) return null;
+
+			// 1. honor the sensor explicitly selected by the user in settings
+			var userSelected = tempSensors.FirstOrDefault(s => s.Name == settings.CpuTemperatureKey);
+			if (userSelected != null) return userSelected;
+
+			// 2. prefer sensors that report the whole CPU package temperature
+			string[] packageNames =
+			{
+				"CPU Package",
+				"Package",
+				"Core (Tctl/Tdie)",
+				"CPU (Tctl/Tdie)",
+				"Tctl/Tdie",
+				"CPU (Tdie)"
+			};
+			foreach (string name in packageNames)
+			{
+				var match = tempSensors.FirstOrDefault(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+				if (match != null) return match;
+			}
+
+			// 3. fuzzy match: any sensor whose name indicates the package temperature
+			var packageLike = tempSensors.FirstOrDefault(s =>
+				s.Name.IndexOf("Package", StringComparison.OrdinalIgnoreCase) >= 0 ||
+				s.Name.IndexOf("Tctl", StringComparison.OrdinalIgnoreCase) >= 0 ||
+				s.Name.IndexOf("Tdie", StringComparison.OrdinalIgnoreCase) >= 0);
+			if (packageLike != null) return packageLike;
+
+			// 4. fallback: use the first temperature sensor instead of showing nothing
+			return tempSensors[0];
+		}
 		void DisposePerformanceCounters()
 		{
 			// dispose all performance counters and clean up
@@ -322,6 +386,10 @@ namespace IconMeterWPF
 
 			// update cpu data
 			cpu.Update();
+
+			// re-select the cpu temperature sensor if it was not available during initialization
+			if (CpuTemperatureSensor == null && cpu != null && App.IsAdministrator())
+				CpuTemperatureSensor = SelectCpuTemperatureSensor(cpu);
 
 			// update gpu data
 			gpu.Update();

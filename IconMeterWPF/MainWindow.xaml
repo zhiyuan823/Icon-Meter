@@ -189,9 +189,13 @@
         <CheckBox  Grid.Row="15"
                   Content="{x:Static properties:Resources.UseVerticalBar}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=UseVerticalBars}"  />
-        <CheckBox  Grid.Row="16"
+        <CheckBox  Grid.Row="16" Grid.ColumnSpan="2"
                   Content="{x:Static properties:Resources.RunAtStartup}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=RunAtStartup}"  />
+        <CheckBox  Grid.Row="16" Grid.Column="2"
+                  Content="{x:Static properties:Resources.RunAsAdmin}"
+                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=RunAsAdmin}"
+                  IsEnabled="{Binding Source={x:Static properties:Settings.Default}, Path=RunAtStartup}" />
         <CheckBox  Grid.Row="17"
                   Content="{x:Static properties:Resources.UseDarkMode}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=UseDarkMode}" />
@@ -238,13 +242,23 @@
                         ContextMenu="{DynamicResource SharedContextMenu}" 
                         Visibility="{Binding Source={x:Static properties:Settings.Default}, Path=ShowIndividualDiskUsage, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" 
                         TrayLeftMouseDown="LogicalProcessorsTaskbarIcon_TrayLeftMouseDown" Grid.RowSpan="7"/>
-        <CheckBox x:Name="checkBoxAllowCPUTemperature" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowCpuTemperature}" Content="{x:Static properties:Resources.CPUTemperature}"  Grid.Row="1"    RenderTransformOrigin="0.5,0.5" >
+        <CheckBox x:Name="checkBoxAllowCPUTemperature" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowCpuTemperature}" Content="{x:Static properties:Resources.CPUTemperature}"  Grid.Row="1"    RenderTransformOrigin="0.5,0.5" IsEnabled="{Binding IsAdministrator}" >
         </CheckBox>
         <ComboBox x:Name="comboxCPUTemperatureSource"  Grid.Row="1" Grid.Column="2" 
                   SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=CpuTemperatureKey, Mode=TwoWay}"
-                  IsEnabled="{Binding ElementName=checkBoxAllowCPUTemperature, Path=IsChecked}"
                   ItemsSource="{Binding Meter.CpuTemperatureSensors}" 
-                  />
+                  >
+            <ComboBox.Style>
+                <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                    <Setter Property="IsEnabled" Value="False" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAdministrator}" Value="True">
+                            <Setter Property="IsEnabled" Value="{Binding ElementName=checkBoxAllowCPUTemperature, Path=IsChecked}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.Style>
+        </ComboBox>
         <xctk:ColorPicker x:Name="BittpmColorCUP" Grid.Column="2"  
             SelectedColor="{Binding CpuColor, Converter={StaticResource DrawingColorToWindowsMediaColor}, Source={x:Static properties:Settings.Default}}"   />
         <CheckBox
@@ -252,12 +266,22 @@
             IsChecked="{Binding ShowCpuUsage, Source={x:Static properties:Settings.Default}}"  Grid.Row="2" />
         <xctk:ColorPicker x:Name="BittpmColorGUP" Grid.Column="2" 
             SelectedColor="{Binding GpuColor, Converter={StaticResource DrawingColorToWindowsMediaColor}, Source={x:Static properties:Settings.Default}}"  Grid.Row="2"  />
-        <CheckBox x:Name="checkBoxAllowGPUTemperature" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowGpuTemperature, Mode=TwoWay}" Content="{x:Static properties:Resources.GPUTemperature}"  Grid.Row="3"    />
+        <CheckBox x:Name="checkBoxAllowGPUTemperature" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowGpuTemperature, Mode=TwoWay}" Content="{x:Static properties:Resources.GPUTemperature}"  Grid.Row="3" IsEnabled="{Binding IsAdministrator}"    />
         <ComboBox x:Name="comboxGPUTemperatureSource" Grid.Row="3" Grid.Column="2"
                   SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=GpuTemperatureKey, Mode=TwoWay}"
                   ItemsSource="{Binding Meter.GpuTemperatureSensors}"
-                  IsEnabled="{Binding ElementName=checkBoxAllowGPUTemperature, Path=IsChecked}"
-                  />
+                  >
+            <ComboBox.Style>
+                <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                    <Setter Property="IsEnabled" Value="False" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAdministrator}" Value="True">
+                            <Setter Property="IsEnabled" Value="{Binding ElementName=checkBoxAllowGPUTemperature, Path=IsChecked}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.Style>
+        </ComboBox>
 
     </Grid>
 </Window>

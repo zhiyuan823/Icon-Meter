@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -134,6 +136,18 @@ namespace IconMeterWPF
 			// detach static event handler when application is disposed,
 			// otherwise memory leaks will result.
 			SystemEvents.DisplaySettingsChanged -= SystemEvents_DisplaySettingsChanged;
+		}
+
+		/// <summary>
+		/// Checks whether the current process is running with administrator privileges.
+		/// </summary>
+		public static bool IsAdministrator()
+		{
+			using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+			{
+				WindowsPrincipal principal = new WindowsPrincipal(identity);
+				return principal.IsInRole(WindowsBuiltInRole.Administrator);
+			}
 		}
 	}
 }

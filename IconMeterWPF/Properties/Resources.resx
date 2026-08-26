@@ -159,6 +159,15 @@
   <data name="RunAtStartup" xml:space="preserve">
     <value>Run at Startup</value>
   </data>
+  <data name="RunAsAdmin" xml:space="preserve">
+    <value>Run as Administrator</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>Icon Meter</value>
+  </data>
+  <data name="RunAsAdminFailed" xml:space="preserve">
+    <value>Could not register the startup task with administrator privileges. Make sure you accept the User Account Control prompt, or run Icon Meter as administrator to enable this option.</value>
+  </data>
   <data name="Send" xml:space="preserve">
     <value>Send:</value>
   </data>

@@ -403,6 +403,33 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run as Administrator.
+        /// </summary>
+        public static string RunAsAdmin {
+            get {
+                return ResourceManager.GetString("RunAsAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Icon Meter.
+        /// </summary>
+        public static string AppName {
+            get {
+                return ResourceManager.GetString("AppName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string for the admin startup task registration failure message.
+        /// </summary>
+        public static string RunAsAdminFailed {
+            get {
+                return ResourceManager.GetString("RunAsAdminFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Send:.
         /// </summary>
         public static string Send {
